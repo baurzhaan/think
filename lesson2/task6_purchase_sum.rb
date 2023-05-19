@@ -23,9 +23,11 @@ loop do
 end
 
 basket_sum = 0
-basket.each_value do |value| 
-  basket_sum += value[:price] * value[:amount] 
-  puts "#{value}. Итоговая сумма за товар = #{value[:price] * value[:amount]}"
+
+basket.each do |item| 
+  item_total_price = item[1][:price] * item[1][:amount]
+  puts "#{item}, итоговая сумма = #{item_total_price}"
+  basket_sum += item_total_price
 end
 
 puts "Итоговая суммма всех покупок: #{basket_sum}"
