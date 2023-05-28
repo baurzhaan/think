@@ -45,15 +45,34 @@ class Train
 end
 
 class Route
-  attr_accessor :start_station, :end_station, :route_station_list
+  attr_accessor :start_station, :end_station, :station_list
+  
   def initialize(start_station, end_station)
     self.start_station = start_station
     self.end_station = end_station
-    self.route_station_list = []
+    self.station_list = [start_station, end_station]
+  end
+
+  def add_interim_station(station_name)
+    self.station_list.insert(-2, station_name)
   end
 end
 
 # main
+
+route1 = Route.new("station1", "stationX")
+puts "Начальная станция: #{route1.start_station}"
+puts "Конечная станция: #{route1.end_station}"
+puts "Список станции: #{route1.station_list}"
+puts "Добавить станцию в список"
+route1.add_interim_station("station2")
+puts "Список станции: #{route1.station_list}"
+puts "Добавить станцию в список"
+route1.add_interim_station("station3")
+puts "Список станции: #{route1.station_list}"
+puts "Добавить станцию в список"
+route1.add_interim_station("station4")
+puts "Список станции: #{route1.station_list}"
 
 # train1 = Train.new("train1", "passenger", 10)
 # p train1
