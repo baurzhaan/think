@@ -89,6 +89,9 @@ puts "Удалить станцию stationX"
 route1.remove_interim_station("stationX")
 puts "Список станции: #{route1.station_list}"
 
+puts "Список станции по порядку: "
+puts route1.station_list
+
 # train1 = Train.new("train1", "passenger", 10)
 # p train1
 # puts "#{train1.train_id} это поезд типа #{train1.train_type} с #{train1.train_wagon_count} вагонами"
