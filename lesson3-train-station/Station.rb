@@ -56,6 +56,11 @@ class Route
   def add_interim_station(station_name)
     self.station_list.insert(-2, station_name)
   end
+
+  def remove_interim_station(station_name)
+    return if (station_name == start_station || station_name == end_station)
+    self.station_list.delete(station_name) # Все еще не понимаю когда использовать self.station_list, а когда @station_list ??? Который Ruby way?
+  end
 end
 
 # main
@@ -72,6 +77,16 @@ route1.add_interim_station("station3")
 puts "Список станции: #{route1.station_list}"
 puts "Добавить станцию в список"
 route1.add_interim_station("station4")
+puts "Список станции: #{route1.station_list}"
+puts
+
+puts "Удалить станцию station3"
+route1.remove_interim_station("station3")
+puts "Список станции: #{route1.station_list}"
+puts
+
+puts "Удалить станцию stationX"
+route1.remove_interim_station("stationX")
 puts "Список станции: #{route1.station_list}"
 
 # train1 = Train.new("train1", "passenger", 10)
