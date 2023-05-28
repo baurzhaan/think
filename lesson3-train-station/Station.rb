@@ -44,46 +44,55 @@ class Train
   end
 end
 
+class Route
+  attr_accessor :start_station, :end_station, :route_station_list
+  def initialize(start_station, end_station)
+    self.start_station = start_station
+    self.end_station = end_station
+    self.route_station_list = []
+  end
+end
+
 # main
 
-train1 = Train.new("train1", "passenger", 10)
-p train1
-puts "#{train1.train_id} это поезд типа #{train1.train_type} с #{train1.train_wagon_count} вагонами"
-puts "Скорость поезда - #{train1.speed}"
-puts "Количество вагонов - #{train1.train_wagon_count}"
-train1.add_wagon
-puts "Количество вагонов (попытка добавить вагон на скорости 0) - #{train1.train_wagon_count}"
+# train1 = Train.new("train1", "passenger", 10)
+# p train1
+# puts "#{train1.train_id} это поезд типа #{train1.train_type} с #{train1.train_wagon_count} вагонами"
+# puts "Скорость поезда - #{train1.speed}"
+# puts "Количество вагонов - #{train1.train_wagon_count}"
+# train1.add_wagon
+# puts "Количество вагонов (попытка добавить вагон на скорости 0) - #{train1.train_wagon_count}"
 
-train1.accelerate(10)
-puts "Скорость поезда - #{train1.speed}"
-puts "Количество вагонов - #{train1.train_wagon_count}"
-train1.add_wagon
-puts "Количество вагонов (попытка добавить вагон на скорости) - #{train1.train_wagon_count}"
+# train1.accelerate(10)
+# puts "Скорость поезда - #{train1.speed}"
+# puts "Количество вагонов - #{train1.train_wagon_count}"
+# train1.add_wagon
+# puts "Количество вагонов (попытка добавить вагон на скорости) - #{train1.train_wagon_count}"
 
-train1.stop
-puts "Скорость поезда - #{train1.speed}"
-puts "Количество вагонов - #{train1.train_wagon_count}"
-train1.add_wagon
-puts "Количество вагонов (попытка добавить вагон после остановки) - #{train1.train_wagon_count}"
-puts
+# train1.stop
+# puts "Скорость поезда - #{train1.speed}"
+# puts "Количество вагонов - #{train1.train_wagon_count}"
+# train1.add_wagon
+# puts "Количество вагонов (попытка добавить вагон после остановки) - #{train1.train_wagon_count}"
+# puts
 
-train2 = Train.new("train2", "cargo", 20)
-p train2
-puts "#{train2.train_id} это поезд типа #{train2.train_type} с #{train2.train_wagon_count} вагонами"
-puts
+# train2 = Train.new("train2", "cargo", 20)
+# p train2
+# puts "#{train2.train_id} это поезд типа #{train2.train_type} с #{train2.train_wagon_count} вагонами"
+# puts
 
-station1 = Station.new("Station1")
-p station1
-station1.accept_train("train1")
-station1.accept_train("train2")
-station1.accept_train("train3")
-puts "Количество поездов на станции #{station1.name}: #{station1.trains_on_station}"
-puts "Список поездов на станции #{station1.name}: #{station1.trains_list}"
-puts
+# station1 = Station.new("Station1")
+# p station1
+# station1.accept_train("train1")
+# station1.accept_train("train2")
+# station1.accept_train("train3")
+# puts "Количество поездов на станции #{station1.name}: #{station1.trains_on_station}"
+# puts "Список поездов на станции #{station1.name}: #{station1.trains_list}"
+# puts
 
-station2 = Station.new("Station2")
-p station2
-station2.accept_train("train1")
-puts "Количество поездов на станции #{station2.name}: #{station2.trains_on_station}"
-puts "Список поездов на станции #{station2.name}: #{station2.trains_list}"
-puts
+# station2 = Station.new("Station2")
+# p station2
+# station2.accept_train("train1")
+# puts "Количество поездов на станции #{station2.name}: #{station2.trains_on_station}"
+# puts "Список поездов на станции #{station2.name}: #{station2.trains_list}"
+# puts
