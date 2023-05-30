@@ -29,20 +29,22 @@ end
 # main
 
 # ========== ПРОВЕРКА КЛАССА Station - НАЧАЛО ==========
-station1 = Station.new("Station1")
-puts "Наименование станции: #{station1.name}"
 
-train1 = Train.new("train1", "passenger", 10)
-station1.add_train(train1)
-train2 = Train.new("train2", "cargo", 20)
-station1.add_train(train2)
+# station1 = Station.new("Station1")
+# puts "Наименование станции: #{station1.name}"
 
-puts "Список всех поездов: #{station1.train_list}"
-puts "Список всех товарных поездов: #{station1.train_list_by_type("cargo")}"
-puts "Список всех пассажирских поездов: #{station1.train_list_by_type("passenger")}"
+# train1 = Train.new("train1", "passenger", 10)
+# station1.add_train(train1)
+# train2 = Train.new("train2", "cargo", 20)
+# station1.add_train(train2)
 
-puts "Список всех поездов: #{station1.train_list}"
-station1.send_train(train1)
-puts "Список всех поездов: #{station1.train_list}"
+# puts "Проверка что это действительно класс: #{station1.trains.first.class}"
+# puts "Список всех поездов: #{station1.train_list}"
+# puts "Список всех товарных поездов: #{station1.train_list_by_type("cargo")}"
+# puts "Список всех пассажирских поездов: #{station1.train_list_by_type("passenger")}"
+
+# puts "Список всех поездов: #{station1.train_list}"
+# station1.send_train(train1)
+# puts "Список всех поездов: #{station1.train_list}"
 
 # ========== ПРОВЕРКА КЛАССА Station - КОНЕЦ ==========
