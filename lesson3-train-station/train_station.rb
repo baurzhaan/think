@@ -36,10 +36,10 @@ class Train
   end
 
   def move_backward
-    if route && @current_station != route.stations.index(route.stations.first())
-      route.stations[@current_station].send_train(self)
+    if @route && @current_station != @route.stations.index(@route.stations.first())
+      @route.stations[@current_station].send_train(self)
       @current_station -= 1
-      route.stations[@current_station].add_train(self)
+      @route.stations[@current_station].add_train(self)
     end
   end
 
@@ -53,11 +53,10 @@ end
 
 ##
 class Station
-  attr_accessor :name
-  attr_reader :trains
+  attr_reader :trains, :name
 
   def initialize(name)
-    self.name = name  # ВОПРОС: для присваивания значения instance variable принято использовать @name или метод-сеттер self.name= ?
+    @name = name
     @trains = []
   end
 
@@ -65,12 +64,8 @@ class Station
     @trains << train
   end
 
-  def train_list
-    @trains.map { |train| train.name }
-  end
-
-  def train_list_by_type(type)
-    @trains.map { |train| train.name if train.type == type }.select { |train| train != nil }
+  def trains_by_type(type)
+    @trains.map { |train| train if train.type == type }.select { |train| train != nil }
   end
 
   def send_train(train)
@@ -80,7 +75,7 @@ end
 
 ##
 class Route
-  attr_reader :start_station, :end_station, :stations
+  attr_reader :stations
   
   def initialize(start_station, end_station)
     @start_station = start_station
@@ -93,10 +88,127 @@ class Route
   end
 
   def remove_station(station)
-    if (station.name == start_station.name || station.name == end_station.name)
+    if (station.name == @start_station.name || station.name == @end_station.name)
       puts "Вы не можете удалить начальную или конечную станцию!"
       return false
     end
     self.stations.delete(station) # Все еще не понимаю когда использовать self.station_list, а когда @station_list ??? Который вариант Ruby way?
   end
 end
+
+# puts "---- Train class test ----\n\n"
+
+# puts "Station has name:"
+# station1 = Station.new("Station 1")
+# p station1
+# puts
+
+# puts "Station can accept single train:"
+# train1 = Train.new("Train 1", "pass", 10)
+# station1.add_train(train1)
+# p station1
+# puts
+
+# puts "Station can return trains it has at the moment:"
+# train2 = Train.new("Train 2", "cargo", 11)
+# station1.add_train(train2)
+# puts station1.trains
+# puts
+
+# puts "Station can return trains according to the type:"
+# p station1.trains_by_type("cargo")
+# puts
+
+# puts "Station can dispatch single train, which means the train is removed from the list."
+# puts "Trains on station before dispatch:"
+# puts station1.trains
+# puts "Trains on station after dispatch:"
+# station1.send_train(train2)
+# puts station1.trains
+# puts
+
+# puts "---- Route class test ----\n\n"
+
+# puts "Route has start and end stations, and list of interim stations"
+# puts "Start and end stations are set when Route is created"
+# stationx = Station.new("Station X")
+# route1 = Route.new(station1, stationx)
+# puts route1
+# puts
+
+# puts "You can add interim stations"
+# station2 = Station.new("Station 2")
+# route1.add_station(station2)
+# station3 = Station.new("Station 3")
+# route1.add_station(station3)
+# p route1
+# puts
+
+# puts "You can delete interim station"
+# route1.remove_station(station2)
+# p route1
+# puts
+
+# puts "You can list all stations"
+# route1.stations.each { |station| puts station.name }
+# puts
+
+# puts "---- Train class test ----\n\n"
+
+# puts "Train has number/name, type, and wagon number, which are assigned at creation time"
+# train3 = Train.new("train 3", "cargo", 23)
+# p train3
+# puts
+
+# puts "Train can accelerate"
+# puts "Current speed: #{train3.speed}"
+# train3.accelerate(12)
+# puts "Accelerated speed: #{train3.speed}"
+# puts
+
+# puts "Train can return current speed"
+# puts "Current speed: #{train3.speed}"
+# puts
+
+# puts "Train can stop -> set the speed to 0"
+# puts "Current speed: #{train3.speed}"
+# train3.stop()
+# puts "Speed after stop: #{train3.speed}"
+
+# puts "Train can return number of wagons"
+# puts "Number of wagons: #{train3.wagon_count}"
+# puts
+
+# puts "Can add wagon by 1. Only when current speed is 0"
+# puts "Number of wagons: #{train3.wagon_count}"
+# train3.add_wagon
+# puts "Number of wagons when I add one, speed is 0: #{train3.wagon_count}"
+# train3.accelerate(1)
+# train3.add_wagon
+# puts "Number of wagons when I add one, speed is 1: #{train3.wagon_count}"
+# puts
+
+# puts "Train can accepts route, and"
+# puts "When added to the route, train is automatically assigned to the first station in the route"
+# route1.stations.first.trains.each { |train| puts train.name }
+# train4 = Train.new("train 4", "cargo", 23, route1)
+# route1.stations.first.trains.each { |train| puts train.name }
+# p train4
+# puts
+
+# puts "Train can move back-and-forth in the route"
+# train4.move_forward
+# train4.move_forward
+# train4.move_forward
+# train4.move_forward
+# train4.move_forward
+# train4.move_forward
+# train4.move_forward
+# p route1
+
+# train4.move_backward
+# train4.move_backward
+# train4.move_backward
+# train4.move_backward
+# train4.move_backward
+# p route1
