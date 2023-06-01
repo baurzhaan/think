@@ -65,7 +65,7 @@ class Station
   end
 
   def trains_by_type(type)
-    @trains.map { |train| train if train.type == type }.select { |train| train != nil }
+    @trains.select { |train| train.type == type }
   end
 
   def send_train(train)
@@ -84,7 +84,7 @@ class Route
   end
 
   def add_station(station)
-    self.stations.insert(-2, station)
+    stations.insert(-2, station)
   end
 
   def remove_station(station)
@@ -92,9 +92,23 @@ class Route
       puts "Вы не можете удалить начальную или конечную станцию!"
       return false
     end
-    self.stations.delete(station) # Все еще не понимаю когда использовать self.station_list, а когда @station_list ??? Который вариант Ruby way?
+    stations.delete(station) # Все еще не понимаю когда использовать self.station_list, а когда @station_list ??? Который вариант Ruby way?
   end
 end
+
+train1 = Train.new("train 1", "pass", 12)
+train2 = Train.new("train 2", "pass", 12)
+train3 = Train.new("train 3", "cargo", 12)
+station1 = Station.new("Station 1")
+station1.add_train(train1)
+station1.add_train(train2)
+station1.add_train(train3)
+station1.trains.each { |train| puts train.name }
+
+puts
+
+station1.trains_by_type("pass").each { |train| puts train.name}
+
 
 # puts "---- Train class test ----\n\n"
 
