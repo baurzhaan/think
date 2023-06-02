@@ -8,13 +8,6 @@ class Train
     @speed = 0
   end
 
-  def assign_route(route)
-    @route = route
-    @route.stations.first.add_train(self)
-    @station_index = 0
-    @route
-  end
-
   def accelerate(value)
     @speed += value
   end
@@ -24,30 +17,38 @@ class Train
   end
 
   def add_wagon
-    @wagon_count += 1 if @speed == 0
+    @wagon_count += 1 if speed == 0
   end
   
   def remove_wagon
-    @wagon_count -= 1 if @speed == 0
+    @wagon_count -= 1 if speed == 0
+  end
+
+  def assign_route(route)
+    @route = route
+    Station.all_stations.each { |station| station.send_train(self) } # проверяем все станции и удаляем поезд оттуда если он там есть
+    @route.stations.first.add_train(self)
+    @station_index = 0
+    @route
   end
 
   def move_forward
-    if @station_index < @route.stations.length - 1
-      @route.stations[@station_index].send_train(self)
+    if next_station
+      current_station.send_train(self)
       @station_index += 1
-      @route.stations[@station_index].add_train(self)
+      current_station.add_train(self)
     end
   end
 
   def move_backward
-    if @station_index > 0
-      @route.stations[@station_index].send_train(self)
+    if previous_station
+      current_station.send_train(self)
       @station_index -= 1
-      @route.stations[@station_index].add_train(self)
+      current_station.add_train(self)
     end
   end
 
-  def prev_station
+  def previous_station
     @route.stations[@station_index - 1] if @station_index > 0
   end
 
@@ -56,7 +57,7 @@ class Train
   end
 
   def next_station
-    @route.stations[@station_index + 1] if @station_index < @route.stations.length - 1
+    @route.stations[@station_index + 1]
   end
 end
 
@@ -64,21 +65,28 @@ end
 class Station
   attr_reader :trains, :name
 
+  @@all_stations = []
+
   def initialize(name)
     @name = name
     @trains = []
+    @@all_stations << self
   end
 
   def add_train(train)
-    @trains << train
+    trains << train
   end
 
   def trains_by_type(type)
-    @trains.select { |train| train.type == type }
+    trains.select { |train| train.type == type }
   end
 
   def send_train(train)
-    @trains.delete(train)
+    trains.delete(train)
+  end
+
+  def self.all_stations
+    @@all_stations
   end
 end
 
@@ -95,7 +103,7 @@ class Route
   end
 
   def remove_station(station)
-    return false if (station == @stations.first() || station == @stations.last())
+    return false if (station == stations.first() || station == stations.last())
     stations.delete(station)
   end
 end

@@ -43,15 +43,16 @@ puts "Прицепка/отцепка вагонов может осуществ
 train1.accelerate(1)
 puts "Текущая скорость: #{train1.speed}"
 puts "Количество вагонов: #{train1.wagon_count}"
-train1.add_wagon()
 puts "Попытались прицепить один вагон. Количество вагонов: #{train1.wagon_count}"
-train1.remove_wagon()
+train1.add_wagon()
 puts "Попытались отцепить один вагон. Количество вагонов: #{train1.wagon_count}"
+train1.remove_wagon()
 puts
 
 # Может принимать маршрут следования (объект класса Route).
 puts "Может принимать маршрут следования (объект класса Route)."
 station1 = Station.new("First Station")
+station1.add_train(train1)
 stationx = Station.new("Last Station")
 route1 = Route.new(station1, stationx)
 train1.assign_route(route1)
@@ -76,7 +77,7 @@ puts
 
 # Возвращать предыдущую станцию на основе маршрута
 puts "Предыдущая станция"
-puts train1.prev_station.name
+puts train1.previous_station.name
 puts
 
 # Возвращать текущую станцию на основе маршрута
@@ -95,7 +96,7 @@ puts
 
 # Возвращать предыдущую станцию на основе маршрута
 puts "Предыдущая станция"
-p train1.prev_station
+p train1.previous_station
 puts
 
 # Возвращать текущую станцию на основе маршрута

@@ -32,3 +32,4 @@ puts station1.trains
 station1.send_train(train1)
 puts "Список поездов после отправки поезда:"
 puts station1.trains
+puts
