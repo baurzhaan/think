@@ -1,4 +1,7 @@
-require_relative "train_station"
+# require_relative "train_station"
+require_relative "Train"
+require_relative "Station"
+require_relative "Route"
 
 # Класс Train (Поезд):
 # Имеет номер (произвольная строка) и тип (грузовой, пассажирский) и количество вагонов, эти данные указываются при создании экземпляра класса

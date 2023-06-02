@@ -1,4 +1,6 @@
-require_relative "train_station"
+# require_relative "train_station"
+require_relative "Route"
+require_relative "Station"
 
 # Класс Route (Маршрут): 
 # Имеет начальную и конечную станцию, а также список промежуточных станций. 

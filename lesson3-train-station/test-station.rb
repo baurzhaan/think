@@ -1,4 +1,6 @@
-require_relative "train_station"
+# require_relative "train_station"
+require_relative "Train"
+require_relative "Station"
 
 # Класс Station (Станция): Имеет название, которое указывается при ее создании
 puts "Класс Station (Станция): Имеет название, которое указывается при ее создании"
