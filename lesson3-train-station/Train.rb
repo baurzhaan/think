@@ -1,9 +1,9 @@
 class Train
-  attr_reader :name, :type, :wagon_count, :speed
+  # attr_reader :name, :type, :wagon_count, :speed
+  attr_reader :name, :wagon_count, :speed
 
-  def initialize(name, type, wagon_count)
+  def initialize(name, wagon_count)
     @name = name
-    @type = type
     @wagon_count = wagon_count
     @speed = 0
   end
@@ -47,6 +47,11 @@ class Train
       current_station.add_train(self)
     end
   end
+
+  protected
+  # все 3 метода ниже protected потому что в текущем виде они используется только как вспомогательные методы к методам move_forward и move_backward. Соответственно к ним нужен доступ только этим двум методам.
+
+  # помещены в секцию protected (не private) потому что в дочерних классах к ним нужен доступ.
 
   def previous_station
     @route.stations[@station_index - 1] if @station_index > 0
