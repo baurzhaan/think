@@ -17,8 +17,8 @@ class Train
 
   def add_wagon(wagon); end
 
-  def remove_wagon(wagon)
-    wagons.delete(wagon) if speed == 0
+  def remove_wagon
+    wagons.pop if speed == 0
   end
 
   def assign_route(route)
