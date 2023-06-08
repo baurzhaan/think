@@ -20,27 +20,24 @@ end
 
 def create_train
   print "Введите номер поезда: "
-  train_name = gets.chomp.force_encoding('UTF-8')
-
+  train_name = gets.chomp
   print "Пассажирский поезд? (да/нет): "
-  type = gets.chomp.force_encoding('UTF-8').downcase
+  type = gets.chomp
 
   case type
   when 'да' || 'yes'
     @trains << PassengerTrain.new(train_name)
-    puts "Добавил пассажирский поезд"
   when 'нет' || 'no'
     @trains << CargoTrain.new(train_name)
-    puts "Добавил грузовой поезд"
   else
-    puts "Введите 'да' или 'нет'"
+    puts "Введите 'да/yes' или 'нет/no'"
   end
   @trains.last
 end
 
 def create_route
   if @stations.length < 2
-    puts "Для создания маршрута должно быть доступно 2 станции и больше. Сперва добавьте больше станции!"
+    puts "Для создания маршрута нужно минимально 2 станции!"
     return
   end
 
@@ -65,25 +62,29 @@ def add_station_to_route
   puts "Выберите маршрут из списка"
   @routes.each_index { |index| puts "(#{index + 1}) Начальная станция: #{@routes[index].stations.first.name} - Конечная станция: #{@routes[index].stations.last.name}" }
   route_index = gets.chomp.to_i - 1
-  
+  target_route = @routes[route_index]
+
   puts "Выберите станцию которую нужно добавить"
   @stations.each_index { |index| puts "(#{index + 1}) #{@stations[index].name}" }
   station_index = gets.chomp.to_i - 1
-  @routes[route_index].add_station(@stations[station_index])
+  target_station = @stations[station_index]
+  target_route.add_station(target_station)
 
-  @routes
+  target_route
 end
 
 def delete_station_in_route
   puts "Выберите маршрут из списка"
   @routes.each_index { |index| puts "(#{index + 1}) Начальная станция: #{@routes[index].stations.first.name} - Конечная станция: #{@routes[index].stations.last.name}" }
   route_index = gets.chomp.to_i - 1
+  target_route = @routes[route_index]
 
   puts "Выберите станцию которую нужно удалить"
-  @routes[route_index].stations.each_index { |index| puts "(#{index + 1}) #{@routes[route_index].stations[index].name}" }
+  target_route.stations.each_index { |index| puts "(#{index + 1}) #{@routes[route_index].stations[index].name}" }
   station_index = gets.chomp.to_i - 1
-  @routes[route_index].remove_station(@routes[route_index].stations[station_index])
-  
+  target_station = @stations[station_index]
+  target_route.remove_station(target_station)
+
   @routes
 end
 
@@ -91,40 +92,70 @@ def assign_route_to_train
   puts "Выберите поезд"
   @trains.each_index { |index| puts "(#{index + 1}) #{@trains[index].name}" }
   train_index = gets.chomp.to_i - 1
+  target_train = @trains[train_index]
   
   puts "Выберите маршрут из списка"
   @routes.each_index { |index| puts "(#{index + 1}) Начальная станция: #{@routes[index].stations.first.name} - Конечная станция: #{@routes[index].stations.last.name}" }
   route_index = gets.chomp.to_i - 1
+  target_route = @routes[route_index]
 
-  @trains[train_index].assign_route(@routes[route_index])
-  p @trains[train_index]
+  target_train.assign_route(target_route)
+  target_train
 end
 
 def add_wagon_to_train
   puts "Выберите поезд"
   @trains.each_index { |index| puts "(#{index + 1}) #{@trains[index].name}" }
   train_index = gets.chomp.to_i - 1
+  target_train = @trains[train_index]
 
-  if @trains[train_index].is_a? CargoTrain
-    @trains[train_index].add_wagon(CargoWagon.new)
-    puts "Добавил грузовой вагон"
-  else
-    @trains[train_index].add_wagon(PassengerWagon.new)
-    puts "Добавил пассажирский вагон"
-  end
-
-  @trains[train_index]
-  p @trains[train_index]
+  target_train.class == CargoTrain ? target_train.add_wagon(CargoWagon.new) : target_train.add_wagon(PassengerWagon.new)
+  p target_train
+  target_train
 end
 
 def delete_wagon_from_train
   puts "Выберите поезд"
   @trains.each_index { |index| puts "(#{index + 1}) #{@trains[index].name}" }
   train_index = gets.chomp.to_i - 1
+  target_train = @trains[train_index]
+
   @trains[train_index].remove_wagon
-  @trains[train_index]
-  
-  p @trains[train_index]
+  target_train
+end
+
+def move_train_in_route
+
+  puts "Выберите поезд"
+  @trains.each_index { |index| puts "(#{index + 1}) #{@trains[index].name}" }
+  train_index = gets.chomp.to_i - 1
+  target_train = @trains[train_index]
+
+  puts "Переместить вперед или назад по маршруту?"
+  puts "(1) Вперед"
+  puts "(2) Назад"
+  forward = gets.chomp == '1' ? true : false
+
+  if forward
+    target_train.move_forward if target_train.route
+  else
+    target_train.move_backward if target_train.route
+  end
+
+  target_train
+end
+
+def list_stations
+  @stations.each { |station| station.name }
+end
+
+def list_trains
+  puts "Выберите станцию"
+  @stations.each_index { |index| puts "(#{index + 1}) #{@stations[index].name}" }
+  station_index = gets.chomp.to_i - 1
+  target_station = @stations[station_index]
+
+  target_station.trains.each { |train| puts train.name }
 end
 
 loop do
@@ -167,7 +198,11 @@ loop do
   when "8"
     delete_wagon_from_train
   when "9"
-    puts "Просматриваю список поездов на станции"
+    move_train_in_route
+  when "10"
+    puts list_stations
+  when "11"
+    p list_trains
   else
     puts "Введите корректное действие"
   end
