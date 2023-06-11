@@ -6,10 +6,17 @@ require_relative "PassengerTrain"
 require_relative "Wagon"
 require_relative "CargoWagon"
 require_relative "PassengerWagon"
+require_relative "seed"
 
 @stations = []
 @trains = []
 @routes = []
+
+# seeding
+@trains = seed_output[:trains]
+@stations = seed_output[:stations]
+@routes = seed_output[:routes]
+# finish seeding
 
 def create_station
   print "Введите наименование станции: "
@@ -110,7 +117,6 @@ def add_wagon_to_train
   target_train = @trains[train_index]
 
   target_train.class == CargoTrain ? target_train.add_wagon(CargoWagon.new) : target_train.add_wagon(PassengerWagon.new)
-  p target_train
   target_train
 end
 
@@ -146,7 +152,7 @@ def move_train_in_route
 end
 
 def list_stations
-  @stations.each { |station| station.name }
+  @stations.map { |station| station.name }
 end
 
 def list_trains
@@ -170,9 +176,10 @@ loop do
   puts "(7) Добавить вагон к поезду"
   puts "(8) Отцепить вагон от поезда"
   puts "(9) Переместить поезд по маршруту"
-  puts "(10) Просмотреть список станции в маршруте"
+  puts "(10) Просмотреть список станции"
   puts "(11) Просмотреть список поездов на станции"
   puts "(0) Выход из программы"
+  puts "(д) Проверка! Показать текущие значения объектов"
   puts "-----------------------"
 
   menu_key = gets.chomp
@@ -202,7 +209,14 @@ loop do
   when "10"
     puts list_stations
   when "11"
-    p list_trains
+    list_trains
+  when "д"
+    puts "\nТекущий объект 'stations'"
+    p @stations
+    puts "\nТекущий объект 'routes'"
+    p @routes
+    puts "\nТекущий объект 'trains'"
+    p @trains
   else
     puts "Введите корректное действие"
   end
