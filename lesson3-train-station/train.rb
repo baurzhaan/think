@@ -16,7 +16,14 @@ class Train
     @speed = 0
   end
 
-  def add_wagon(wagon); end
+  def add_wagon
+    if (speed == 0)
+      case
+      when self.class == PassengerTrain then wagons << PassengerWagon
+      when self.class == CargoTrain then wagons << CargoWagon
+      end
+    end
+  end
 
   def remove_wagon
     wagons.pop if speed == 0

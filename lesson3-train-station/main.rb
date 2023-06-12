@@ -28,16 +28,21 @@ end
 def create_train
   print "Введите номер поезда: "
   train_name = gets.chomp
-  print "Пассажирский поезд? (да/нет): "
-  type = gets.chomp
 
-  case type
-  when 'да' || 'yes'
-    @trains << PassengerTrain.new(train_name)
-  when 'нет' || 'no'
-    @trains << CargoTrain.new(train_name)
-  else
-    puts "Введите 'да/yes' или 'нет/no'"
+  loop do
+    puts "(1) Пассажирский поезд"
+    puts "(2) Грузовой поезд"
+    type = gets.chomp.to_i
+
+    case type
+    when 1
+      @trains << PassengerTrain.new(train_name)
+      break
+    when 2 
+      @trains << CargoTrain.new(train_name)
+      break
+    else puts "Выберите тип поезда '1' или '2'"
+    end
   end
   @trains.last
 end
@@ -116,7 +121,7 @@ def add_wagon_to_train
   train_index = gets.chomp.to_i - 1
   target_train = @trains[train_index]
 
-  target_train.class == CargoTrain ? target_train.add_wagon(CargoWagon.new) : target_train.add_wagon(PassengerWagon.new)
+  target_train.add_wagon
   target_train
 end
 
