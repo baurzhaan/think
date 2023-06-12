@@ -129,9 +129,10 @@ def delete_wagon_from_train
   puts "Выберите поезд"
   @trains.each_index { |index| puts "(#{index + 1}) #{@trains[index].name}" }
   train_index = gets.chomp.to_i - 1
-  target_train = @trains[train_index]
+  
+  target_train = train_index < @trains.length ? @trains[train_index] : nil
 
-  @trains[train_index].remove_wagon
+  target_train.remove_wagon if target_train
   target_train
 end
 
