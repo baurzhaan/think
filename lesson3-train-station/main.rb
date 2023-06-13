@@ -19,15 +19,17 @@ require_relative "seed"
 # finish seeding
 
 def create_station
-  print "Введите наименование станции: "
+  print "Введите наименование станции ('с' для отмены): "
   station_name = gets.chomp
+  return if station_name == 'с'
   @stations << Station.new(station_name)
   @stations.last
 end
 
 def create_train
-  print "Введите номер поезда: "
+  print "Введите номер поезда ('с' для отмены): "
   train_name = gets.chomp
+  return if train_name == 'с'
 
   loop do
     puts "(1) Пассажирский поезд"
@@ -173,17 +175,17 @@ end
 loop do
   puts "-----------------------"
   puts "Выберите действие (нажмите соответствующую цифру):"
-  puts "(1) Создать станцию"
+  # puts "(1) Создать станцию"
   puts "(2) Создать поезд"
-  puts "(3) Создать маршрут"
-  puts "(4) Добавить станцию к маршуту"
-  puts "(5) Удалить станцию из маршрута"
-  puts "(6) Назначить маршрут к поезду"
-  puts "(7) Добавить вагон к поезду"
-  puts "(8) Отцепить вагон от поезда"
-  puts "(9) Переместить поезд по маршруту"
-  puts "(10) Просмотреть список станции"
-  puts "(11) Просмотреть список поездов на станции"
+  # puts "(3) Создать маршрут"
+  # puts "(4) Добавить станцию к маршуту"
+  # puts "(5) Удалить станцию из маршрута"
+  # puts "(6) Назначить маршрут к поезду"
+  # puts "(7) Добавить вагон к поезду"
+  # puts "(8) Отцепить вагон от поезда"
+  # puts "(9) Переместить поезд по маршруту"
+  # puts "(10) Просмотреть список станции"
+  # puts "(11) Просмотреть список поездов на станции"
   puts "(0) Выход из программы"
   puts "(д) Проверка! Показать текущие значения объектов"
   puts "-----------------------"
@@ -194,28 +196,28 @@ loop do
   when "0"
     puts "Спасибо что использовали наш сервис"
     break
-  when "1"
-    create_station
+  # when "1"
+  #   create_station
   when "2"
     create_train
-  when "3"
-    create_route
-  when "4"
-    add_station_to_route
-  when "5"
-    delete_station_in_route
-  when "6"
-    assign_route_to_train
-  when "7"
-    add_wagon_to_train
-  when "8"
-    delete_wagon_from_train
-  when "9"
-    move_train_in_route
-  when "10"
-    puts list_stations
-  when "11"
-    list_trains
+  # when "3"
+  #   create_route
+  # when "4"
+  #   add_station_to_route
+  # when "5"
+  #   delete_station_in_route
+  # when "6"
+  #   assign_route_to_train
+  # when "7"
+  #   add_wagon_to_train
+  # when "8"
+  #   delete_wagon_from_train
+  # when "9"
+  #   move_train_in_route
+  # when "10"
+  #   list_stations
+  # when "11"
+  #   puts "На станции нет поездов" if list_trains.length == 0
   when "д"
     puts "\nТекущий объект 'stations'"
     p @stations
