@@ -14,8 +14,7 @@ def seed_output
 
   (1..5).each do |number|
     stations << Station.new("Станция #{number.to_s}")
-    trains << PassengerTrain.new("Поезд пасс #{number.to_s}")
-    trains << CargoTrain.new("Поезд груз #{number.to_s}")
+    number.odd? ? trains << PassengerTrain.new("Поезд пасс #{number.to_s}") : trains << CargoTrain.new("Поезд груз #{number.to_s}")
   end
   
   routes << Route.new(stations.first, stations.last)
