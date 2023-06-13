@@ -27,7 +27,7 @@ def create_station
 end
 
 def create_train
-  print "Введите номер поезда ('с' для отмены): "
+  print "Введите номер поезда ('с' для отмены):"
   train_name = gets.chomp
   return if train_name == 'с'
 
@@ -59,7 +59,8 @@ def create_route
   first_station, last_station = nil
 
   loop do
-    puts "Выберите начальную станцию из списка"
+    puts "Выберите начальную станцию из списка ('с' для отмены):"
+    return if train_name == 'с'
     stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
     station_index = gets.chomp.to_i - 1
     if station_index.between?(0, stations.length)
@@ -87,15 +88,28 @@ def create_route
 end
 
 def add_station_to_route
-  puts "Выберите маршрут из списка"
-  @routes.each_index { |index| puts "(#{index + 1}) Начальная станция: #{@routes[index].stations.first.name} - Конечная станция: #{@routes[index].stations.last.name}" }
-  route_index = gets.chomp.to_i - 1
-  target_route = @routes[route_index]
+  
+  target_route = nil
+
+  loop do
+    puts "Выберите маршрут из списка ('с' для отмены):"
+    @routes.each_index { |index| puts "(#{index + 1}) Начальная станция: #{@routes[index].stations.first.name} - Конечная станция: #{@routes[index].stations.last.name}" }
+    route_index = gets.chomp
+    return if route_index == 'с'
+
+    if route_index.to_i.between?(1, @routes.length)
+      target_route = @routes[route_index.to_i - 1]
+      break
+    end
+    puts "Необходимо выбрать маршрут из указанного диапазона!"
+  end
+
+  stations = @stations[1..-2]
 
   puts "Выберите станцию которую нужно добавить"
-  @stations.each_index { |index| puts "(#{index + 1}) #{@stations[index].name}" }
+  stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
   station_index = gets.chomp.to_i - 1
-  target_station = @stations[station_index]
+  target_station = stations[station_index]
   target_route.add_station(target_station)
 
   target_route
@@ -191,8 +205,8 @@ loop do
   puts "Выберите действие (нажмите соответствующую цифру):"
   # puts "(1) Создать станцию"
   # puts "(2) Создать поезд"
-  puts "(3) Создать маршрут"
-  # puts "(4) Добавить станцию к маршуту"
+  # puts "(3) Создать маршрут"
+  puts "(4) Добавить станцию к маршуту"
   # puts "(5) Удалить станцию из маршрута"
   # puts "(6) Назначить маршрут к поезду"
   # puts "(7) Добавить вагон к поезду"
@@ -214,10 +228,10 @@ loop do
   #   create_station
   # when "2"
   #   create_train
-  when "3"
-    create_route
-  # when "4"
-  #   add_station_to_route
+  # when "3"
+  #   create_route
+  when "4"
+    add_station_to_route
   # when "5"
   #   delete_station_in_route
   # when "6"
