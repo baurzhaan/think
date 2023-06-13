@@ -56,18 +56,32 @@ def create_route
   end
 
   stations = @stations[0..@stations.length]
+  first_station, last_station = nil
 
-  puts "Выберите начальную станцию из списка"
-  stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
-  station_index = gets.chomp.to_i - 1
-  first_station = stations[station_index]
+  loop do
+    puts "Выберите начальную станцию из списка"
+    stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
+    station_index = gets.chomp.to_i - 1
+    if station_index.between?(0, stations.length)
+      first_station = stations[station_index]
+      break
+    end
+    puts "Необходимо выбрать станцию из указанного диапазона!"
+  end
+
 
   stations.delete(first_station)
 
-  puts "Выберите конечную станцию из списка"
-  stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
-  station_index = gets.chomp.to_i - 1
-  last_station = stations[station_index]
+  loop do
+    puts "Выберите конечную станцию из списка"
+    stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
+    station_index = gets.chomp.to_i - 1
+    if station_index.between?(0, stations.length)
+      last_station = stations[station_index]
+      break
+    end
+    puts "Необходимо выбрать станцию из указанного диапазона!"
+  end
 
   @routes << Route.new(first_station, last_station)
 end
@@ -176,8 +190,8 @@ loop do
   puts "-----------------------"
   puts "Выберите действие (нажмите соответствующую цифру):"
   # puts "(1) Создать станцию"
-  puts "(2) Создать поезд"
-  # puts "(3) Создать маршрут"
+  # puts "(2) Создать поезд"
+  puts "(3) Создать маршрут"
   # puts "(4) Добавить станцию к маршуту"
   # puts "(5) Удалить станцию из маршрута"
   # puts "(6) Назначить маршрут к поезду"
@@ -198,10 +212,10 @@ loop do
     break
   # when "1"
   #   create_station
-  when "2"
-    create_train
-  # when "3"
-  #   create_route
+  # when "2"
+  #   create_train
+  when "3"
+    create_route
   # when "4"
   #   add_station_to_route
   # when "5"

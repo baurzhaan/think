@@ -17,7 +17,7 @@ def seed_output
     number.odd? ? trains << PassengerTrain.new("Поезд пасс #{number.to_s}") : trains << CargoTrain.new("Поезд груз #{number.to_s}")
   end
   
-  routes << Route.new(stations.first, stations.last)
+  # routes << Route.new(stations.first, stations.last)
   
   result = {
     stations: stations,
