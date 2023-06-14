@@ -103,7 +103,22 @@ def add_station_to_route
     puts "Необходимо выбрать маршрут из указанного диапазона!"
   end
 
-  stations = @stations[1..-2]
+  stations = @stations.filter do |station|
+    station_is_in_route = true
+    target_route.stations.each do |route_station| 
+      if route_station.name == station.name
+        station_is_in_route = false
+        break
+      end
+    end
+    station_is_in_route
+  end
+
+  if stations.length == 0
+    puts "Нет станции для добавления"
+    return target_route
+  end
+
   puts "Выберите станцию которую нужно добавить"
   stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
   station_index = gets.chomp.to_i - 1
@@ -243,7 +258,7 @@ loop do
   # when "3"
   #   create_route
   when "4"
-    add_station_to_route
+    p add_station_to_route
   when "5"
     delete_station_in_route
   # when "6"
