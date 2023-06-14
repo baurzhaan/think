@@ -146,11 +146,22 @@ def delete_station_in_route
   
   stations = target_route.stations[1..-2]
   if stations.length > 0
-    puts "Выберите станцию которую нужно удалить"
-    stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
-    station_index = gets.chomp.to_i - 1
-    target_station = stations[station_index]
-    target_route.remove_station(target_station)
+    
+    loop do
+      puts "Выберите станцию которую нужно удалить"
+      stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
+      station_index = gets.chomp.to_i - 1
+      if station_index.between?(0, stations.length - 1)
+        target_station = stations[station_index]
+        target_route.remove_station(target_station)
+        break
+      end
+      puts "Необходимо выбрать станцию из указанного диапазона!"
+    end
+
+
+
+
   else
     puts "Нет доступных станции на удаление!"
   end
@@ -258,7 +269,7 @@ loop do
   # when "3"
   #   create_route
   when "4"
-    p add_station_to_route
+    add_station_to_route
   when "5"
     delete_station_in_route
   # when "6"
