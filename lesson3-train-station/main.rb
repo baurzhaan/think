@@ -164,7 +164,6 @@ def delete_station_in_route
 end
 
 def assign_route_to_train
-  
   target_train, target_route = nil
 
   loop do
@@ -194,10 +193,18 @@ def assign_route_to_train
 end
 
 def add_wagon_to_train
-  puts "Выберите поезд"
-  @trains.each_index { |index| puts "(#{index + 1}) #{@trains[index].name}" }
-  train_index = gets.chomp.to_i - 1
-  target_train = @trains[train_index]
+  target_train = nil
+
+  loop do
+    puts "Выберите поезд"
+    @trains.each_index { |index| puts "(#{index + 1}) #{@trains[index].name}" }
+    train_index = gets.chomp.to_i - 1
+    if train_index.between?(0, @trains.length - 1)
+      target_train = @trains[train_index]
+      break
+    end
+    puts "Введите поезд из списка!"
+  end
 
   target_train.add_wagon
   target_train
@@ -256,8 +263,8 @@ loop do
   # puts "(3) Создать маршрут"
   # puts "(4) Добавить станцию к маршуту"
   # puts "(5) Удалить станцию из маршрута"
-  puts "(6) Назначить маршрут к поезду"
-  # puts "(7) Добавить вагон к поезду"
+  # puts "(6) Назначить маршрут к поезду"
+  puts "(7) Добавить вагон к поезду"
   # puts "(8) Отцепить вагон от поезда"
   # puts "(9) Переместить поезд по маршруту"
   # puts "(10) Просмотреть список станции"
@@ -282,10 +289,10 @@ loop do
   #   add_station_to_route
   # when "5"
   #   delete_station_in_route
-  when "6"
-    assign_route_to_train
-  # when "7"
-  #   add_wagon_to_train
+  # when "6"
+  #   assign_route_to_train
+  when "7"
+    add_wagon_to_train
   # when "8"
   #   delete_wagon_from_train
   # when "9"
