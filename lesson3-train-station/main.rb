@@ -88,7 +88,6 @@ def create_route
 end
 
 def add_station_to_route
-  
   target_route = nil
 
   loop do
@@ -105,7 +104,6 @@ def add_station_to_route
   end
 
   stations = @stations[1..-2]
-
   puts "Выберите станцию которую нужно добавить"
   stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
   station_index = gets.chomp.to_i - 1
@@ -116,17 +114,31 @@ def add_station_to_route
 end
 
 def delete_station_in_route
-  puts "Выберите маршрут из списка"
-  @routes.each_index { |index| puts "(#{index + 1}) Начальная станция: #{@routes[index].stations.first.name} - Конечная станция: #{@routes[index].stations.last.name}" }
-  route_index = gets.chomp.to_i - 1
-  target_route = @routes[route_index]
+  target_route, route_index = nil
 
-  puts "Выберите станцию которую нужно удалить"
-  target_route.stations.each_index { |index| puts "(#{index + 1}) #{@routes[route_index].stations[index].name}" }
-  station_index = gets.chomp.to_i - 1
-  target_station = @stations[station_index]
-  target_route.remove_station(target_station)
+  loop do
+    puts "Выберите маршрут из списка ('с' для отмены):"
+    @routes.each_index { |index| puts "(#{index + 1}) Начальная станция: #{@routes[index].stations.first.name} - Конечная станция: #{@routes[index].stations.last.name}" }
+    route_index = gets.chomp
+    return if route_index == 'с'
 
+    if route_index.to_i.between?(1, @routes.length)
+      target_route = @routes[route_index.to_i - 1]
+      break
+    end
+    puts "Необходимо выбрать маршрут из указанного диапазона!"
+  end
+  
+  stations = target_route.stations[1..-2]
+  if stations.length > 0
+    puts "Выберите станцию которую нужно удалить"
+    stations.each_index { |index| puts "(#{index + 1}) #{stations[index].name}" }
+    station_index = gets.chomp.to_i - 1
+    target_station = stations[station_index]
+    target_route.remove_station(target_station)
+  else
+    puts "Нет доступных станции на удаление!"
+  end
   @routes
 end
 
@@ -207,7 +219,7 @@ loop do
   # puts "(2) Создать поезд"
   # puts "(3) Создать маршрут"
   puts "(4) Добавить станцию к маршуту"
-  # puts "(5) Удалить станцию из маршрута"
+  puts "(5) Удалить станцию из маршрута"
   # puts "(6) Назначить маршрут к поезду"
   # puts "(7) Добавить вагон к поезду"
   # puts "(8) Отцепить вагон от поезда"
@@ -232,8 +244,8 @@ loop do
   #   create_route
   when "4"
     add_station_to_route
-  # when "5"
-  #   delete_station_in_route
+  when "5"
+    delete_station_in_route
   # when "6"
   #   assign_route_to_train
   # when "7"
@@ -247,12 +259,15 @@ loop do
   # when "11"
   #   puts "На станции нет поездов" if list_trains.length == 0
   when "д"
-    puts "\nТекущий объект 'stations'"
-    p @stations
     puts "\nТекущий объект 'routes'"
-    p @routes
+    @routes.each { |route| p route }
+    
+    puts "\nТекущий объект 'stations'"
+    @stations.each { |station| p station }
+
     puts "\nТекущий объект 'trains'"
-    p @trains
+    @trains.each { |train| p train }
+    puts
   else
     puts "Введите корректное действие"
   end
