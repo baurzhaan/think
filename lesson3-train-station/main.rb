@@ -12,7 +12,7 @@ require_relative "seed"
 @trains = []
 @routes = []
 
-# seeding
+# seeding...
 @trains = seed_output[:trains]
 @stations = seed_output[:stations]
 @routes = seed_output[:routes]
