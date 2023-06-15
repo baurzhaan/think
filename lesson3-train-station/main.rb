@@ -229,16 +229,35 @@ def delete_wagon_from_train
 end
 
 def move_train_in_route
+  target_train, forward = nil
 
-  puts "Выберите поезд"
-  @trains.each_index { |index| puts "(#{index + 1}) #{@trains[index].name}" }
-  train_index = gets.chomp.to_i - 1
-  target_train = @trains[train_index]
+  loop do
+    puts "Выберите поезд"
+    @trains.each_index { |index| puts "(#{index + 1}) #{@trains[index].name}" }
+    train_index = gets.chomp.to_i - 1
+    if train_index.between?(0, @trains.length - 1)
+      target_train = @trains[train_index]
+      break
+    end
+    puts "Введите поезд из списка!"
+  end
 
-  puts "Переместить вперед или назад по маршруту?"
-  puts "(1) Вперед"
-  puts "(2) Назад"
-  forward = gets.chomp == '1' ? true : false
+  loop do
+    puts "Переместить вперед или назад по маршруту?"
+    puts "(1) Вперед"
+    puts "(2) Назад"
+    forward_choice = gets.chomp
+    case forward_choice
+    when '1'
+      forward = true
+      break
+    when '2'
+      forward = false
+      break
+    else
+      puts "Выберите между (1) или (2)!"
+    end
+  end
 
   if forward
     target_train.move_forward if target_train.route
@@ -254,28 +273,35 @@ def list_stations
 end
 
 def list_trains
-  puts "Выберите станцию"
-  @stations.each_index { |index| puts "(#{index + 1}) #{@stations[index].name}" }
-  station_index = gets.chomp.to_i - 1
-  target_station = @stations[station_index]
-
+  target_station = nil
+  
+  loop do
+    puts "Выберите станцию"
+    @stations.each_index { |index| puts "(#{index + 1}) #{@stations[index].name}" }
+    station_index = gets.chomp.to_i - 1
+    if station_index.between?(0, @stations.length - 1)
+      target_station = @stations[station_index]
+      break
+    end
+    puts "Необходимо выбрать станцию из указанного диапазона!"
+  end
   target_station.trains.each { |train| puts train.name }
 end
 
 loop do
   puts "-----------------------"
   puts "Выберите действие (нажмите соответствующую цифру):"
-  # puts "(1) Создать станцию"
-  # puts "(2) Создать поезд"
-  # puts "(3) Создать маршрут"
-  # puts "(4) Добавить станцию к маршуту"
-  # puts "(5) Удалить станцию из маршрута"
-  # puts "(6) Назначить маршрут к поезду"
+  puts "(1) Создать станцию"
+  puts "(2) Создать поезд"
+  puts "(3) Создать маршрут"
+  puts "(4) Добавить станцию к маршуту"
+  puts "(5) Удалить станцию из маршрута"
+  puts "(6) Назначить маршрут к поезду"
   puts "(7) Добавить вагон к поезду"
   puts "(8) Отцепить вагон от поезда"
-  # puts "(9) Переместить поезд по маршруту"
-  # puts "(10) Просмотреть список станции"
-  # puts "(11) Просмотреть список поездов на станции"
+  puts "(9) Переместить поезд по маршруту"
+  puts "(10) Просмотреть список станции"
+  puts "(11) Просмотреть список поездов на станции"
   puts "(0) Выход из программы"
   puts "(д) Проверка! Показать текущие значения объектов"
   puts "-----------------------"
@@ -286,28 +312,28 @@ loop do
   when "0"
     puts "Спасибо что использовали наш сервис"
     break
-  # when "1"
-  #   create_station
-  # when "2"
-  #   create_train
-  # when "3"
-  #   create_route
-  # when "4"
-  #   add_station_to_route
-  # when "5"
-  #   delete_station_in_route
-  # when "6"
-  #   assign_route_to_train
+  when "1"
+    create_station
+  when "2"
+    create_train
+  when "3"
+    create_route
+  when "4"
+    add_station_to_route
+  when "5"
+    delete_station_in_route
+  when "6"
+    assign_route_to_train
   when "7"
     add_wagon_to_train
   when "8"
     delete_wagon_from_train
-  # when "9"
-  #   move_train_in_route
-  # when "10"
-  #   list_stations
-  # when "11"
-  #   puts "На станции нет поездов" if list_trains.length == 0
+  when "9"
+    move_train_in_route
+  when "10"
+    p list_stations
+  when "11"
+    puts "На станции нет поездов" if list_trains.length == 0
   when "д"
     puts "\nТекущий объект 'routes'"
     @routes.each { |route| p route }
