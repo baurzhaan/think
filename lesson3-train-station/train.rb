@@ -1,3 +1,7 @@
+require_relative "wagon"
+require_relative "passenger_wagon"
+require_relative "cargo_wagon"
+
 class Train
   attr_reader :name, :wagons, :speed, :route
 
@@ -16,11 +20,11 @@ class Train
     @speed = 0
   end
 
-  def add_wagon
+  def add_wagon(wagon)
     if (speed == 0)
-      case
-      when self.class == PassengerTrain then wagons << PassengerWagon
-      when self.class == CargoTrain then wagons << CargoWagon
+      case self.class.to_s
+      when "PassengerTrain" then wagons << PassengerWagon.new
+      when "CargoTrain" then wagons << CargoWagon.new
       end
     end
   end
